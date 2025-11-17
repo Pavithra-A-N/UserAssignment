@@ -1,0 +1,60 @@
+<div class="generic-list-wrapper">
+<div class="generic-list-card">
+<!-- Search Bar / Tool Bar for global search-->
+<div class="generic-list-toolbar">
+  <span class="p-input-icon-left toolbar-search">
+    <i class="pi pi-search"></i>
+    <input pInputText type="text"
+           [(ngModel)]="filterGlobalValue"
+           (input)="applyGlobalFilter()"
+           placeholder="Search here" />
+  </span>
+  <button pButton label="Add New"   class="toolbar-add-btn" icon="pi pi-plus" (click)="onAction('add', null)"></button>
+</div>
+<!-- Consumed P-table as suggested , good to know primNg exists 
+  it works great with Minimal SCSS
+  Used triStateSort with Manual Sort order check-->
+<p-table #dt
+         [value]="data"
+         [paginator]="true"
+         [rows]="5"
+         [globalFilterFields]="globalFilterFields"
+         sortMode="single"
+         triStateSort="true"
+         [sortField]="sortField"      
+          [sortOrder]="sortOrder!"
+         (onSort)="onSortChange($event)"
+         responsiveLayout="stack"
+         [breakpoint]="'960px'"
+         [tableStyle]="{ 'min-width': '30rem' }">
+  
+  <ng-template pTemplate="header">
+    <tr>
+      <!--Check the given column data is sortable or not 
+       and assigns the SortIcon-->
+      <th *ngFor="let col of columns"
+          [pSortableColumn]="col.sortable ? col.field : undefined"
+          [style.width]="col.width">
+        {{ col.header }}
+        <p-sortIcon *ngIf="col.sortable" [field]="col.field"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-rowData let-cols="columns">
+    <tr>
+      <td *ngFor="let col of columns">
+        <!-- For the Actions if the list has any-->
+        <ng-container *ngIf="col.templateRef; else defaultCell">
+          <ng-template [ngTemplateOutlet]="col.templateRef"
+                       [ngTemplateOutletContext]="{ $implicit: rowData }"></ng-template>
+        </ng-container>
+        <!-- Default column mapping-->
+        <ng-template #defaultCell>
+        {{ col.field ? rowData[col.field!] : '' }}
+        </ng-template>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+</div></div>

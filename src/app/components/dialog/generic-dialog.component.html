@@ -1,0 +1,16 @@
+<!-- Consumed P-dialog as suggested-->
+<p-dialog [(visible)]="visible"
+          (onHide)="onCancel()"
+          [modal]="true"
+          [header]="header"
+          [style]="{ width: '400px' }"
+         >
+   <!-- Can be any content not only specific to form-->
+   <ng-content></ng-content>
+    <div class="dialog-footer">
+      <button pButton type="button" label="{{cancelLabel}}" class="p-button-text"
+              (click)="onCancel()"></button>
+      <button pButton type="submit" label="{{saveLabel}}" (click)="onSubmit()"></button>
+    </div>
+</p-dialog>
+

@@ -1,0 +1,40 @@
+<div class="list-page-container">
+<h2 class="page-title text-left">User Dashboard</h2>
+<!-- Created generic list so that it can be also
+     product, account or any list data
+    instead of strictly sticking to user-->
+<app-generic-list
+  [data]="users"
+  [columns]="columns"
+  (rowAction)="handleAction($event.action, $event.rowData)">
+</app-generic-list>
+
+<!-- Given Actions as Templateref
+     so that the actions are configurable-->
+<ng-template #actionTemplate let-row>
+  <button pButton icon="pi pi-pencil" class="p-button-text" aria-label="Edit" 
+  (click)="handleAction('edit', row)"></button>
+  <button pButton icon="pi pi-trash" class="p-button-text p-button-danger" aria-label="Delete" 
+  (click)="handleAction('delete', row)"></button>
+</ng-template>
+
+<!-- Created this generic dialog with ng-content 
+     where the content inside can also be 
+     something apart from FormData-->
+
+<app-generic-dialog
+    [(visible)]="dialogVisible"
+    [header]="dialogHeader"
+    (save)="handleDialogSave()"
+    (cancel)="dialogVisible = false">
+    
+    <app-generic-form 
+      #genericForm [formGroup]="userForm" 
+      [config]="formConfig"
+      (formSubmit)="saveUser($event)"> </app-generic-form>
+</app-generic-dialog>
+
+<!-- Used Confirm Dialog and Toast as sugessted-->
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
+</div>
